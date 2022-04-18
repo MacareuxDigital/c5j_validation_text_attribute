@@ -16,7 +16,7 @@ $form = Loader::helper('form');
 
         <?php echo $form->label('akRegexRule', t('Regex Rule'))?>
 
-        <?php echo $form->text('akRegexRule', isset($akRegexRule) ? $akRegexRule : '')?>
+        <?php echo $form->text('akRegexRule', isset($akRegexRule) ? $akRegexRule : '', ['placeholder' => '/^[a-zA-Z0-9]+$/'])?>
     </div>
 
     <div class="form-group">

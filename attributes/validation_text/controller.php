@@ -81,7 +81,7 @@ class Controller extends AttributeController
             if ($type->getRegexRule()) {
                 $pattern = $type->getRegexRule();
 
-                $validator = $this->app->make(RegexValidator::class, [$pattern]);
+                $validator = $this->app->make(RegexValidator::class, ['pattern' => $pattern]);
                 $e = $this->app->make('error');
 
                 if ($type->getErrorMessage()) {
@@ -123,7 +123,7 @@ class Controller extends AttributeController
                  * @var ValidateTextSettings
                  */
                 $pattern = $type->getRegexRule();
-                $validator = $this->app->make(RegexValidator::class, [$pattern]);
+                $validator = $this->app->make(RegexValidator::class, ['pattern' => $pattern]);
                 if (!$validator->isValid($data['value'], $e)) {
                     return $this->createAttributeValue(null);
                 }
