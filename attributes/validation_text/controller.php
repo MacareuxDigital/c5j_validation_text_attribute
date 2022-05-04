@@ -144,6 +144,8 @@ class Controller extends AttributeController
             if (!$this->validateRegex($akRegexRule)) {
                 $e->add(t('You must specify valid regex format.'));
             }
+        } else {
+            $e->add(t('You must specify valid regex format.'));
         }
 
         return $e;
