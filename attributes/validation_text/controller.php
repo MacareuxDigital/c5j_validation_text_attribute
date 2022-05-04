@@ -130,6 +130,7 @@ class Controller extends AttributeController
                     return $this->createAttributeValue(null);
                 }
             }
+
             return $this->createAttributeValue($data['value']);
         }
 
@@ -186,7 +187,7 @@ class Controller extends AttributeController
     }
 
     /**
-     * Check if a given regular expression is valid
+     * Check if a given regular expression is valid.
      *
      * @param $regex
      *
@@ -198,6 +199,7 @@ class Controller extends AttributeController
         if (@preg_match($regex, null) === false) {
             return false;
         }
+
         return true;
     }
 }

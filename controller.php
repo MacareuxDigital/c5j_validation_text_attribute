@@ -3,14 +3,16 @@
 namespace Concrete\Package\C5jValidationTextAttribute;
 
 use Concrete\Core\Attribute\Category\CategoryService;
-use Concrete\Core\Attribute\Category\PageCategory;
 use Concrete\Core\Package\Package;
 
 class Controller extends Package
 {
     protected $pkgHandle = 'c5j_validation_text_attribute';
+
     protected $appVersionRequired = '8.5.4';
+
     protected $pkgVersion = '0.9';
+
     protected $pkgAutoloaderRegistries = [
         'src' => '\C5j\C5jValidationTextAttribute',
     ];
