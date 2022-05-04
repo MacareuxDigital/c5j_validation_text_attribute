@@ -2,6 +2,8 @@
 
 namespace Concrete\Package\C5jValidationTextAttribute;
 
+use Concrete\Core\Attribute\Category\CategoryService;
+use Concrete\Core\Attribute\Category\PageCategory;
 use Concrete\Core\Package\Package;
 
 class Controller extends Package
@@ -30,30 +32,31 @@ class Controller extends Package
         $type = $factory->getByHandle('validation_text');
         if (!is_object($type)) {
             $type = $factory->add('validation_text', 'Validation Text', $pkg);
-            $service = $this->app->make('Concrete\Core\Attribute\Category\CategoryService');
-            $collectionCategory = $service->getByHandle('collection')->getController();
+            /** @var CategoryService $service */
+            $service = $this->app->make(CategoryService::class);
+            $collectionCategory = $service->getByHandle('collection');
             if ($collectionCategory) {
-                $collectionCategory->associateAttributeKeyType($type);
+                $collectionCategory->getController()->associateAttributeKeyType($type);
             }
-            $userCategory = $service->getByHandle('user')->getController();
+            $userCategory = $service->getByHandle('user');
             if ($userCategory) {
-                $userCategory->associateAttributeKeyType($type);
+                $userCategory->getController()->associateAttributeKeyType($type);
             }
-            $fileCategory = $service->getByHandle('file')->getController();
+            $fileCategory = $service->getByHandle('file');
             if ($fileCategory) {
-                $fileCategory->associateAttributeKeyType($type);
+                $fileCategory->getController()->associateAttributeKeyType($type);
             }
-            $siteCategory = $service->getByHandle('site')->getController();
+            $siteCategory = $service->getByHandle('site');
             if ($siteCategory) {
-                $siteCategory->associateAttributeKeyType($type);
+                $siteCategory->getController()->associateAttributeKeyType($type);
             }
-            $eventCategory = $service->getByHandle('event')->getController();
+            $eventCategory = $service->getByHandle('event');
             if ($eventCategory) {
-                $eventCategory->associateAttributeKeyType($type);
+                $eventCategory->getController()->associateAttributeKeyType($type);
             }
-            $expressCategory = $service->getByHandle('express')->getController();
+            $expressCategory = $service->getByHandle('express');
             if ($expressCategory) {
-                $expressCategory->associateAttributeKeyType($type);
+                $expressCategory->getController()->associateAttributeKeyType($type);
             }
         }
     }
