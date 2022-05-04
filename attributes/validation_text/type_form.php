@@ -1,6 +1,6 @@
 <?php
 defined('C5_EXECUTE') or die('Access Denied.');
-$form = Loader::helper('form');
+/** @var \Concrete\Core\Form\Service\Form $form */
 ?>
 <fieldset>
     <legend><?php echo t('Text Options')?></legend>

@@ -13,6 +13,8 @@ use Concrete\Core\Validator\String\RegexValidator;
 
 class Controller extends AttributeController
 {
+    protected $helpers = ['form'];
+
     protected $searchIndexFieldDefinition = [
         'type' => 'text',
         'options' => ['default' => null, 'notnull' => false],
