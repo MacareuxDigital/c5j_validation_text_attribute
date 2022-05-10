@@ -2,6 +2,7 @@
 
 namespace Concrete\Package\C5jValidationTextAttribute;
 
+use C5j\C5jValidationTextAttribute\MigrationTool\Importer\CIF\Attribute\Key\Manager as AttributeKeyManager;
 use Concrete\Core\Attribute\Category\CategoryService;
 use Concrete\Core\Package\Package;
 
@@ -60,6 +61,16 @@ class Controller extends Package
             if ($expressCategory) {
                 $expressCategory->getController()->associateAttributeKeyType($type);
             }
+        }
+    }
+
+    public function on_start()
+    {
+        $migration_tool_pkg = \Concrete\Core\Package\Package::getByHandle('migration_tool');
+        if ($migration_tool_pkg !== null) {
+            $this->app->bindshared('migration/manager/import/attribute/key', function ($app) {
+                return new AttributeKeyManager($app);
+            });
         }
     }
 }
