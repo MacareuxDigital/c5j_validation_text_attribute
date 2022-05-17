@@ -180,25 +180,7 @@ class Controller extends AttributeController
 
         return $type;
     }
-
-    public function exportValue(\SimpleXMLElement $akv)
-    {
-        $value = $this->getAttributeValue()->getValue();
-        if ($value) {
-            $akv->addChild('value', $value);
-        }
-    }
-
-    public function importValue(\SimpleXMLElement $akv)
-    {
-        if (isset($akv->value)) {
-            $av = new TextValue();
-            $av->setValue((string) $akv->value);
-
-            return $av;
-        }
-    }
-
+    
     protected function load()
     {
         $ak = $this->getAttributeKey();
