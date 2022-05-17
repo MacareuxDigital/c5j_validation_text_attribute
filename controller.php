@@ -2,8 +2,10 @@
 
 namespace Concrete\Package\C5jValidationTextAttribute;
 
+use C5j\C5jValidationTextAttribute\MigrationTool\Importer\CIF\Attribute\Key\ValidationTextImporter;
 use Concrete\Core\Attribute\Category\CategoryService;
 use Concrete\Core\Package\Package;
+use Concrete\Core\Package\PackageService;
 
 class Controller extends Package
 {
@@ -14,8 +16,21 @@ class Controller extends Package
     protected $pkgVersion = '0.9';
 
     protected $pkgAutoloaderRegistries = [
-        'src' => '\C5j\C5jValidationTextAttribute',
+        'src/Entity' => '\C5j\C5jValidationTextAttribute\Entity',
     ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPackageAutoloaderRegistries()
+    {
+        $registries = parent::getPackageAutoloaderRegistries();
+        if ($this->isMigrationToolInstalled()) {
+            $registries['src/MigrationTool'] = '\C5j\C5jValidationTextAttribute\MigrationTool';
+        }
+
+        return $registries;
+    }
 
     public function getPackageName()
     {
@@ -61,5 +76,32 @@ class Controller extends Package
                 $expressCategory->getController()->associateAttributeKeyType($type);
             }
         }
+    }
+
+    public function on_after_packages_start()
+    {
+        if ($this->isMigrationToolInstalled()) {
+            $key_manager = $this->app->make('migration/manager/import/attribute/key');
+            $key_manager->extend('validation_text', function () {
+                return new ValidationTextImporter();
+            });
+
+            $value_manager = $this->app->make('migration/manager/import/attribute/value');
+            $value_manager->extend('validation_text', function () {
+                return new \PortlandLabs\Concrete5\MigrationTool\Importer\CIF\Attribute\Value\StandardImporter();
+            });
+        }
+    }
+
+    private function isMigrationToolInstalled(): bool
+    {
+        /** @var PackageService $packageService */
+        $packageService = $this->app->make(PackageService::class);
+        $migrationToolPackage = $packageService->getByHandle('migration_tool');
+        if ($migrationToolPackage && $migrationToolPackage->isPackageInstalled()) {
+            return true;
+        }
+
+        return false;
     }
 }

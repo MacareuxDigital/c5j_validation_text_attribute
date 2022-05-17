@@ -20,6 +20,12 @@ class Controller extends AttributeController
         'options' => ['default' => null, 'notnull' => false],
     ];
 
+    private $akTextPlaceholder;
+
+    private $akRegexRule;
+
+    private $akErrorMessage;
+
     public function type_form()
     {
         $this->load();
@@ -152,6 +158,29 @@ class Controller extends AttributeController
         return $e;
     }
 
+    public function exportKey($akey)
+    {
+        $this->load();
+        $type = $akey->addChild('type');
+        $type->addAttribute('akTextPlaceholder', $this->akTextPlaceholder);
+        $type->addAttribute('akRegexRule', $this->akRegexRule);
+        $type->addAttribute('akErrorMessage', $this->akErrorMessage);
+
+        return $akey;
+    }
+
+    public function importKey(\SimpleXMLElement $akey)
+    {
+        $type = $this->getAttributeKeySettings();
+        if (isset($akey->type)) {
+            $type->setPlaceholder($akey->type['akTextPlaceholder']);
+            $type->setRegexRule($akey->type['akRegexRule']);
+            $type->setErrorMessage($akey->type['akErrorMessage']);
+        }
+
+        return $type;
+    }
+    
     protected function load()
     {
         $ak = $this->getAttributeKey();
@@ -166,6 +195,10 @@ class Controller extends AttributeController
         $akTextPlaceholder = $type->getPlaceholder();
         $akRegexRule = $type->getRegexRule();
         $akErrorMessage = $type->getErrorMessage();
+
+        $this->akTextPlaceholder = $akTextPlaceholder;
+        $this->akRegexRule = $akRegexRule;
+        $this->akErrorMessage = $akErrorMessage;
 
         if ($akTextPlaceholder) {
             $this->set('akTextPlaceholder', $akTextPlaceholder);
