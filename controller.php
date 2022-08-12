@@ -13,7 +13,7 @@ class Controller extends Package
 
     protected $appVersionRequired = '8.5.4';
 
-    protected $pkgVersion = '0.9';
+    protected $pkgVersion = '1.0.0';
 
     protected $pkgAutoloaderRegistries = [
         'src/Entity' => '\C5j\C5jValidationTextAttribute\Entity',
