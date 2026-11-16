@@ -95,6 +95,8 @@ class Controller extends AttributeController
                 if ($type->getErrorMessage()) {
                     $akErrorMessage = $type->getErrorMessage();
                     $validator->setErrorString(1, $akErrorMessage);
+                } else {
+                    $validator->setErrorString(1, t('The value does not match the required pattern.'));
                 }
 
                 if (!$validator->isValid($data['value'], $e)) {

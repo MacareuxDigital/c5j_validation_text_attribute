@@ -13,7 +13,7 @@ class Controller extends Package
 
     protected $appVersionRequired = '8.5.4';
 
-    protected $pkgVersion = '1.0.0';
+    protected $pkgVersion = '1.0.1';
 
     protected $pkgAutoloaderRegistries = [
         'src/Entity' => '\C5j\C5jValidationTextAttribute\Entity',
@@ -45,7 +45,21 @@ class Controller extends Package
     public function install()
     {
         $pkg = parent::install();
+        $this->installAttributes($pkg);
+
+        return $pkg;
+    }
+
+    public function upgrade()
+    {
+        parent::upgrade();
+        $this->installAttributes($this->getPackageEntity());
+    }
+
+    protected function installAttributes($pkg)
+    {
         $factory = $this->app->make('Concrete\Core\Attribute\TypeFactory');
+
         $type = $factory->getByHandle('validation_text');
         if (!is_object($type)) {
             $type = $factory->add('validation_text', 'Validation Text', $pkg);
@@ -74,6 +88,37 @@ class Controller extends Package
             $expressCategory = $service->getByHandle('express');
             if ($expressCategory) {
                 $expressCategory->getController()->associateAttributeKeyType($type);
+            }
+        }
+
+        $textarea = $factory->getByHandle('validation_textarea');
+        if (!is_object($textarea)) {
+            $textarea = $factory->add('validation_textarea', 'Validation Textarea', $pkg);
+            /** @var CategoryService $service */
+            $service = $this->app->make(CategoryService::class);
+            $collectionCategory = $service->getByHandle('collection');
+            if ($collectionCategory) {
+                $collectionCategory->getController()->associateAttributeKeyType($textarea);
+            }
+            $userCategory = $service->getByHandle('user');
+            if ($userCategory) {
+                $userCategory->getController()->associateAttributeKeyType($textarea);
+            }
+            $fileCategory = $service->getByHandle('file');
+            if ($fileCategory) {
+                $fileCategory->getController()->associateAttributeKeyType($textarea);
+            }
+            $siteCategory = $service->getByHandle('site');
+            if ($siteCategory) {
+                $siteCategory->getController()->associateAttributeKeyType($textarea);
+            }
+            $eventCategory = $service->getByHandle('event');
+            if ($eventCategory) {
+                $eventCategory->getController()->associateAttributeKeyType($textarea);
+            }
+            $expressCategory = $service->getByHandle('express');
+            if ($expressCategory) {
+                $expressCategory->getController()->associateAttributeKeyType($textarea);
             }
         }
     }
